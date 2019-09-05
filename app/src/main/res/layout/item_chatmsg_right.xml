@@ -71,7 +71,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/msg_item"
-                android:background="@drawable/bubbleright"
+                android:background="@drawable/pop"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="3dp"
                 android:textSize="18dp"

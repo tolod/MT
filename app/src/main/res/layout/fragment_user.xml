@@ -15,46 +15,46 @@
         android:layout_height="100dp"
         android:src="@android:drawable/ic_menu_gallery"/>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/user_id"
-            android:hint="e-Mail"
+            android:hint="이메일"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/user_name"
-            android:hint="Name"
+            android:hint="이름(닉네임)"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/user_msg"
-            android:hint="Status Message"
+            android:hint="상태 메시지"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/saveBtn"
-        android:text="Save"
+        android:text="프로필 저장하기"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/changePWBtn"
-        android:text="Change Password"
+        android:text="비밀번호 변경"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

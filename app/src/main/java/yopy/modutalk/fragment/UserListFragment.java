@@ -72,7 +72,7 @@ import static com.google.firebase.firestore.FirebaseFirestore.getInstance;
 public class UserListFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private FirestoreAdapter adapteryo;
+    private FirestoreAdapter firestoreAdapter;
     private InterstitialAd mInterstitialAd;
     private FirebaseFirestore mFireStore;
     private List usersList;
@@ -106,7 +106,7 @@ public class UserListFragment extends Fragment {
         });
     }
 
-    private FirestoreAdapter UserFragmentRecyclerViewAdapter;
+
     //SwipeController swipeController = null;
 
 
@@ -114,16 +114,16 @@ public class UserListFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        if (UserFragmentRecyclerViewAdapter != null) {
-            UserFragmentRecyclerViewAdapter.startListening();
+        if (firestoreAdapter != null) {
+            firestoreAdapter.startListening();
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (UserFragmentRecyclerViewAdapter != null) {
-            UserFragmentRecyclerViewAdapter.stopListening();
+        if (firestoreAdapter != null) {
+            firestoreAdapter.stopListening();
         }
     }
 
@@ -164,16 +164,16 @@ public class UserListFragment extends Fragment {
         // recyclerView.setAdapter(firestoreAdapter);
 
         //mFireStore = FirebaseFirestore.getInstance();
-       // mSearchField = (EditText) view.findViewById(R.id.search_field);
-       // mSearchBtn = (ImageButton) view.findViewById(R.id.search_btn);
+        // mSearchField = (EditText) view.findViewById(R.id.search_field);
+        // mSearchBtn = (ImageButton) view.findViewById(R.id.search_btn);
 
         //mSearchBtn.setOnClickListener(new View.OnClickListener() {
         //    @Override
         //    public void onClick(View v) {
 
-                // SearchUserFirebase();
+        // SearchUserFirebase();
         //    }
-       // });
+        // });
 
 
         // swipeController = new SwipeController(new SwipeControllerActions() {
@@ -250,129 +250,127 @@ query.addSnapshotListener(new EventListener<QuerySnapshot>() {
     }
 */
 
-        class UserFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    class UserFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-            private List<UserModel> userModels;
-            final private RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(60));
-            private StorageReference storageReference;
-            private String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        private List<UserModel> userModels;
+        final private RequestOptions requestOptions = new RequestOptions().transforms(new CenterCrop(), new RoundedCorners(60));
+        private StorageReference storageReference;
+        private String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
 
-            public UserFragmentRecyclerViewAdapter() {
-                
-                storageReference = FirebaseStorage.getInstance().getReference();
+        public UserFragmentRecyclerViewAdapter() {
 
-                userModels = new ArrayList<>();
-                final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                //final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            storageReference = FirebaseStorage.getInstance().getReference();
 
-                final DocumentReference docref = db.collection("users").document("usernm");
-                docref.collection("users").orderBy("usernm")
-                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot snapshots,
-                                                @Nullable FirebaseFirestoreException e) {
+            userModels = new ArrayList<>();
+            final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            //final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                                userModels = new ArrayList<UserModel>();
-                                userModels.clear();
-                                for (DocumentSnapshot doc : snapshots) {
-                                    UserModel userModel = doc.toObject(UserModel.class);
-                                    if(myUid.equals(userModel.getUid())) continue;
-                                    userModels.add(userModel);
-                                }
-                                notifyDataSetChanged();
+            final DocumentReference docref = db.collection("users").document("usernm");
+            docref.collection("users").orderBy("usernm")
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot snapshots,
+                                            @Nullable FirebaseFirestoreException e) {
+
+                            userModels = new ArrayList<UserModel>();
+                            userModels.clear();
+                            for (DocumentSnapshot doc : snapshots) {
+                                UserModel userModel = doc.toObject(UserModel.class);
+                                if(myUid.equals(userModel.getUid())) continue;
+                                userModels.add(userModel);
                             }
-
-                        });
-            }
-
-
-
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user, parent, false);
-                return new CustomViewHolder(view);
-            }
-
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                //DocumentSnapshot documentSnapshot = getSnapshot(position);
-                userModels = new ArrayList<>();
-                final UserModel user = userModels.get(position);
-                //final UserModel user = documentSnapshot.toObject(UserModel.class);
-                CustomViewHolder customViewHolder = (CustomViewHolder) holder;
-                customViewHolder.user_name.setText(user.getUsernm());
-                customViewHolder.user_msg.setText(user.getUsermsg());
-
-
-                if(myUid.equals(user.getUid())) {
-                    customViewHolder.itemView.setVisibility(View.INVISIBLE);
-                    customViewHolder.itemView.getLayoutParams().height = 0;
-                    return;
-                }
-               customViewHolder.user_name.setText(user.getUsernm());
-                customViewHolder.user_msg.setText(user.getUsermsg());
-
-
-                if (user.getUserphoto() == null) {
-                    Glide.with(getActivity()).load(R.drawable.user)
-                            .apply(requestOptions)
-                            .into(customViewHolder.user_photo);
-
-                } else {
-                    Glide.with(getActivity())
-                            .load(storageReference.child("userPhoto/" + user.getUserphoto()))
-                            .apply(requestOptions)
-                            .into(customViewHolder.user_photo);
-                }
-
-
-                // 여기 위에 부분 활용하여, 밑에 클릭 리스너에 바로 ChatActivity 로 가게 되어있는데 프로필 상세 ACTIVITY 적용가능.
-
-
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        Intent intent = new Intent(getView().getContext(), ChatActivity.class);
-                        intent.putExtra("toUid", user.getUid());
-                        startActivity(intent);
-                        if (mInterstitialAd.isLoaded()) {
-                            mInterstitialAd.show();
+                            notifyDataSetChanged();
                         }
-                        //displayAD();
 
-
-                    }
-                });
-            }
-
-            @Override
-            public int getItemCount() {
-                return userModels.size();
-            }
+                    });
         }
 
 
-        private class CustomViewHolder extends RecyclerView.ViewHolder {
-            public ImageView user_photo;
-            public TextView user_name;
-            public TextView user_msg;
-            //private ImageView img_on;
-            //private ImageView img_off;
+
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user, parent, false);
+            return new CustomViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            //DocumentSnapshot documentSnapshot = getSnapshot(position);
+            userModels = new ArrayList<>();
+            final UserModel user = userModels.get(position);
+            //final UserModel user = documentSnapshot.toObject(UserModel.class);
+            CustomViewHolder customViewHolder = (CustomViewHolder) holder;
+            customViewHolder.user_name.setText(user.getUsernm());
+            customViewHolder.user_msg.setText(user.getUsermsg());
 
 
-            public CustomViewHolder(View view) {
-                super(view);
-                user_photo = view.findViewById(R.id.user_photo);
-                user_name = view.findViewById(R.id.user_name);
-                user_msg = view.findViewById(R.id.user_msg);
-                //img_on=view.findViewById(R.id.img_on);
-                //img_off=view.findViewById(R.id.img_off);
+            if(myUid.equals(user.getUid())) {
+                customViewHolder.itemView.setVisibility(View.INVISIBLE);
+                customViewHolder.itemView.getLayoutParams().height = 0;
+                return;
             }
+            customViewHolder.user_name.setText(user.getUsernm());
+            customViewHolder.user_msg.setText(user.getUsermsg());
+
+
+            if (user.getUserphoto() == null) {
+                Glide.with(getActivity()).load(R.drawable.user)
+                        .apply(requestOptions)
+                        .into(customViewHolder.user_photo);
+
+            } else {
+                Glide.with(getActivity())
+                        .load(storageReference.child("userPhoto/" + user.getUserphoto()))
+                        .apply(requestOptions)
+                        .into(customViewHolder.user_photo);
+            }
+
+
+            // 여기 위에 부분 활용하여, 밑에 클릭 리스너에 바로 ChatActivity 로 가게 되어있는데 프로필 상세 ACTIVITY 적용가능.
+
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(getView().getContext(), ChatActivity.class);
+                    intent.putExtra("toUid", user.getUid());
+                    startActivity(intent);
+                    if (mInterstitialAd.isLoaded()) {
+                        mInterstitialAd.show();
+                    }
+                    //displayAD();
+
+
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return userModels.size();
         }
     }
 
 
+    private class CustomViewHolder extends RecyclerView.ViewHolder {
+        public ImageView user_photo;
+        public TextView user_name;
+        public TextView user_msg;
+        //private ImageView img_on;
+        //private ImageView img_off;
+
+
+        public CustomViewHolder(View view) {
+            super(view);
+            user_photo = view.findViewById(R.id.user_photo);
+            user_name = view.findViewById(R.id.user_name);
+            user_msg = view.findViewById(R.id.user_msg);
+            //img_on=view.findViewById(R.id.img_on);
+            //img_off=view.findViewById(R.id.img_off);
+        }
+    }
+}

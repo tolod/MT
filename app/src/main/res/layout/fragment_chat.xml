@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -20,14 +20,11 @@
         <Button
             android:id="@+id/imageBtn"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/ic_menu_gallery" />
+            android:layout_height="24dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:background="@drawable/ic_gall" />
 
-        <Button
-            android:id="@+id/fileBtn"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/ic_menu_save" />
 
         <EditText
             android:id="@+id/msg_input"
@@ -39,7 +36,7 @@
         <Button
             android:id="@+id/sendBtn"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/ic_menu_send"/>
+            android:layout_height="25dp"
+            android:background="@drawable/ic_rig"/>
     </LinearLayout>
 </LinearLayout>

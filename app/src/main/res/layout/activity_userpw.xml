@@ -8,31 +8,31 @@
     android:orientation="vertical"
     tools:context=".UserPWActivity">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/user_pw1"
-            android:hint="Password"
+            android:hint="비밀번호"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/user_pw2"
-            android:hint="Password Confirm"
+            android:hint="비밀번호 확인"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/saveBtn"
-        android:text="Save Password"
+        android:text="비밀번호 저장"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

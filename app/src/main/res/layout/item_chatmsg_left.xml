@@ -65,7 +65,7 @@
 
             <TextView
                 android:id="@+id/msg_item"
-                android:background="@drawable/bubbleleft"
+                android:background="@drawable/pop"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="3dp"
                 android:textSize="18dp"

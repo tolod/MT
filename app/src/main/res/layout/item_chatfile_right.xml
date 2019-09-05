@@ -68,7 +68,7 @@
 
         <LinearLayout
             android:id="@+id/msgLine_item"
-            android:background="@drawable/bubbleright"
+            android:background="@drawable/pop"
             android:orientation="vertical"
             android:padding="10dp"
             android:layout_width="wrap_content"
