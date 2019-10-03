@@ -56,10 +56,10 @@ public class ChatRoomFragment extends Fragment{
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private RecyclerViewAdapter mAdapter;
-
+    private InterstitialAd mInterstitialAd;
     public ChatRoomFragment() {
     }
-    private InterstitialAd mInterstitialAd;
+
 
 
     @Override
@@ -67,10 +67,10 @@ public class ChatRoomFragment extends Fragment{
         super.onCreate(savedInstanceState);
         getInstance();
         MobileAds.initialize(getContext(),
-                "ca-app-pub-9778515385069911/4557972785");
+                "ca-app-pub-9778515385069911~5724000209");
 
         mInterstitialAd = new InterstitialAd(getContext());
-        mInterstitialAd.setAdUnitId("ca-app-pub-9778515385069911/4557972785");
+        mInterstitialAd.setAdUnitId("ca-app-pub-9778515385069911/6935700019");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         mInterstitialAd.setAdListener(new AdListener() {

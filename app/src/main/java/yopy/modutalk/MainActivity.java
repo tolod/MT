@@ -1,11 +1,17 @@
 package yopy.modutalk;
 
+import android.Manifest;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -19,12 +25,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,20 +50,19 @@ import yopy.modutalk.fragment.UserFragment;
 import yopy.modutalk.fragment.UserListFragment;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final int MY_PERMISSION_STORAGE = 1111;
     private InterstitialAd mInterstitialAd;
-private EditText mSearchField;
-private ImageButton mSearchBtn;
+    private EditText mSearchField;
+    private ImageButton mSearchBtn;
 
-private RecyclerView mResultList;
+    private RecyclerView mResultList;
 
 
+    public void displayAD() {
+        if (mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
+            mInterstitialAd.show(); //보여준다
 
-    public void displayAD(){
-            if(mInterstitialAd.isLoaded()) { //광고가 로드 되었을 시
-                mInterstitialAd.show(); //보여준다
-
-            }
+        }
     }
 
     /**
@@ -75,36 +83,15 @@ private RecyclerView mResultList;
     private FloatingActionButton makeRoomBtn;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-View view = getWindow().getDecorView();
+        View view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
 
 
-
-
-
-
-
-
-        MobileAds.initialize(this,
-                "ca-app-pub-9778515385069911/4557972785");
-
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-9778515385069911/4557972785");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                // Load the next interstitial.
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            }
-    });
 
 
 
@@ -144,6 +131,15 @@ View view = getWindow().getDecorView();
                 startActivity(new Intent(v.getContext(), SelectUserActivity.class));
             }
         });
+
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+
     }
 
     void sendRegistrationToServer() {

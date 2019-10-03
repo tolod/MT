@@ -62,6 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
+        app:backgroundTint="#ffffff"
         app:layout_anchor="@id/bottom_navigation_view"
         app:layout_anchorGravity="top|end"
         app:useCompatPadding="true"

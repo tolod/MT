@@ -9,6 +9,9 @@ public class UserModel {
     private String usermsg;
     private String search;
 
+    public UserModel() {
+
+    }
     //private String status;
 
    // public String getStatus(){return status;}
